@@ -1,5 +1,4 @@
 #include "UIDevice+notchedDevice.h"
-#import <LocalAuthentication/LocalAuthentication.h>
 
 @implementation UIDevice (notchedDevice) 
 
@@ -12,7 +11,8 @@
     LAContext *context = [[LAContext alloc] init];
     
     [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
-    return context.biometryType == LABiometryTypeFaceID; // only devices with FaceID are notched atm (also the latest iPad PRO so that's why i added an iPad check)
+    if (@available(iOS 11.0, *)) return context.biometryType == LABiometryTypeFaceID; // only devices with FaceID are notched atm (also the latest iPad PRO so that's why i added an iPad check)
+    return false;
 }
 
 -(BOOL)isAnIpad {
